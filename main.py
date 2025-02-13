@@ -243,7 +243,7 @@ class KiteAIAutomation:
             print(f"\n{self.print_timestamp()} {Fore.RED}An error occurred: {e}{Style.RESET_ALL}")
 
 def main():
-        """Display a sleek, modern banner and start the automation process."""
+    """Display a sleek, modern banner and start the automation process."""
     print(Fore.CYAN + """
 ╔═════════════════════════════════════════════════╗
 ║           🚀 KITE AI AUTOMATION SYSTEM 🚀        ║
