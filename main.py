@@ -69,15 +69,15 @@ class KiteAIAutomation:
         return f"{Fore.YELLOW}[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]{Style.RESET_ALL}"
 
     def print_stats(self, stats: Dict):
-        print("\n" + Fore.CYAN + "╔════════════════════════════════════════════╗")
-        print("║            🚀 CURRENT STATISTICS           ║")
-        print("╚════════════════════════════════════════════╝" + Style.RESET_ALL)
+        print("\n" + Fore.CYAN + "╔════════════════════════════════════════════════╗")
+        print("║               🚀 CURRENT STATISTICS            ║")
+        print("╚════════════════════════════════════════════════╝" + Style.RESET_ALL)
 
         print(f"📊 {Fore.YELLOW}Total Interactions:{Style.RESET_ALL} {Fore.GREEN}{stats.get('total_interactions', 0)}{Style.RESET_ALL}")
         print(f"🤖 {Fore.YELLOW}Total Agents Used:{Style.RESET_ALL} {Fore.GREEN}{stats.get('total_agents_used', 0)}{Style.RESET_ALL}")
         print(f"🕰 {Fore.YELLOW}First Seen:{Style.RESET_ALL} {Fore.CYAN}{stats.get('first_seen', 'N/A')}{Style.RESET_ALL}")
         print(f"🔄 {Fore.YELLOW}Last Active:{Style.RESET_ALL} {Fore.CYAN}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
-        print(Fore.CYAN + "════════════════════════════════════════════" + Style.RESET_ALL)
+        print(Fore.CYAN + "════════════════════════════════════════════════" + Style.RESET_ALL)
 
     def run(self):
         print(f"{self.print_timestamp()} {Fore.GREEN}🚀 Starting AI interaction script with 24-hour limits (Press Ctrl+C to stop){Style.RESET_ALL}")
@@ -96,6 +96,12 @@ class KiteAIAutomation:
                 print(f"📊 Points: {self.daily_points + self.POINTS_PER_INTERACTION}/{self.MAX_DAILY_POINTS}")
                 print(Fore.MAGENTA + "══════════════════════════════════════════════════" + Style.RESET_ALL)
 
+                transactions = self.get_recent_transactions()
+                AI_ENDPOINTS["https://deployment-sofftlsf9z4fya3qchykaanq.stag-vxzy.zettablock.com/main"]["questions"] = [
+                    f"What do you think of this transaction? {tx}"
+                    for tx in transactions
+                ]
+
                 endpoint = random.choice(list(AI_ENDPOINTS.keys()))
                 question = random.choice(AI_ENDPOINTS[endpoint]["questions"])
 
@@ -104,9 +110,14 @@ class KiteAIAutomation:
                 print(f"🆔 {Fore.WHITE}Agent ID: {AI_ENDPOINTS[endpoint]['agent_id']}")
                 print(f"❓ {Fore.WHITE}Question: {question}" + Style.RESET_ALL)
 
-                response = "Sample AI Response"  # Simulated AI response
+                response = self.send_ai_query(endpoint, question)
 
-                print(f"{self.print_timestamp()} {Fore.GREEN}✅ Interaction successfully recorded!{Style.RESET_ALL}")
+                if self.report_usage(endpoint, question, response):
+                    print(f"{self.print_timestamp()} {Fore.GREEN}✅ Usage reported successfully{Style.RESET_ALL}")
+
+                final_stats = self.check_stats()
+                self.print_stats(final_stats)
+
                 self.daily_points += self.POINTS_PER_INTERACTION
 
                 delay = random.uniform(1, 3)
