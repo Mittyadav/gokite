@@ -79,8 +79,31 @@ class KiteAIAutomation:
         print(f"🔄 {Fore.YELLOW}Last Active:{Style.RESET_ALL} {Fore.CYAN}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
         print(Fore.CYAN + "════════════════════════════════════════════════" + Style.RESET_ALL)
 
+    def get_recent_transactions(self) -> List[str]:
+        print(f"{self.print_timestamp()} {Fore.CYAN}🔍 Fetching recent transactions...{Style.RESET_ALL}")
+        # Simulated transactions (Replace with actual API calls)
+        return [f"Tx {random.randint(1000, 9999)}" for _ in range(3)]
+
+    def send_ai_query(self, endpoint: str, question: str) -> str:
+        print(f"{self.print_timestamp()} {Fore.GREEN}📡 Sending query to AI Assistant...{Style.RESET_ALL}")
+        # Simulated response (Replace with real API calls)
+        return f"AI Response for: {question}"
+
+    def report_usage(self, endpoint: str, question: str, response: str) -> bool:
+        print(f"{self.print_timestamp()} {Fore.YELLOW}📤 Reporting usage...{Style.RESET_ALL}")
+        # Simulated report success
+        return True
+
+    def check_stats(self) -> Dict:
+        return {
+            "total_interactions": random.randint(50, 500),
+            "total_agents_used": random.randint(2, 5),
+            "first_seen": "2024-01-01",
+            "last_active": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }
+
     def run(self):
-        print(f"{self.print_timestamp()} {Fore.GREEN}🚀 Starting AI interaction script with 24-hour limits (Press Ctrl+C to stop){Style.RESET_ALL}")
+        print(f"{self.print_timestamp()} {Fore.GREEN}🚀 Starting AI interaction script... (Press Ctrl+C to stop){Style.RESET_ALL}")
         print(Fore.CYAN + "════════════════════════════════════════════════════" + Style.RESET_ALL)
         print(f"💳 {Fore.YELLOW}Wallet Address:{Style.RESET_ALL} {Fore.MAGENTA}{self.wallet_address}{Style.RESET_ALL}")
         print(f"🎯 {Fore.YELLOW}Daily Point Limit:{Style.RESET_ALL} {self.MAX_DAILY_POINTS} points ({self.MAX_DAILY_INTERACTIONS} interactions)")
@@ -119,25 +142,13 @@ class KiteAIAutomation:
                 self.print_stats(final_stats)
 
                 self.daily_points += self.POINTS_PER_INTERACTION
-
-                delay = random.uniform(1, 3)
-                print(f"\n{self.print_timestamp()} {Fore.YELLOW}⏳ Waiting {delay:.1f} seconds before next query...{Style.RESET_ALL}")
-                time.sleep(delay)
+                time.sleep(random.uniform(1, 3))
 
         except KeyboardInterrupt:
             print(f"\n{self.print_timestamp()} {Fore.YELLOW}🛑 Script stopped by user{Style.RESET_ALL}")
 
 def main():
-    print_banner = """
-╔══════════════════════════════════════════════╗
-║               KITE AI AUTOMATE               ║
-║     Github: https://github.com/Mittyadav    ║
-╚══════════════════════════════════════════════╝
-    """
-    print(Fore.CYAN + print_banner + Style.RESET_ALL)
-    
-    wallet_address = input(f"{Fore.YELLOW}Register first here: {Fore.GREEN}https://testnet.gokite.ai?r=cmuST6sG{Fore.YELLOW} and Clear Tasks!\nNow, input your registered Wallet Address: {Style.RESET_ALL}")
-    
+    wallet_address = input(f"{Fore.YELLOW}Input your registered Wallet Address: {Style.RESET_ALL}")
     automation = KiteAIAutomation(wallet_address)
     automation.run()
 
