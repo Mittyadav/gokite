@@ -6,39 +6,31 @@ from typing import Dict, List
 from datetime import datetime, timedelta
 from colorama import init, Fore, Style
 
+# Initialize color formatting
 init(autoreset=True)
 
+# AI Endpoints and Questions
 AI_ENDPOINTS = {
     "https://deployment-uu9y1z4z85rapgwkss1muuiz.stag-vxzy.zettablock.com/main": {
         "agent_id": "deployment_UU9y1Z4Z85RAPGwkss1mUUiZ",
         "name": "Kite AI Assistant",
         "questions": [
-            "What is Kite AI?",
-            "How does Kite AI help developers?",
-            "What are the main features of Kite AI?",
-            "Can you explain the Kite AI ecosystem?",
-            "How do I get started with Kite AI?",
-            "What are the benefits of using Kite AI?",
-            "How does Kite AI compare to other AI platforms?",
-            "What kind of problems can Kite AI solve?",
-            "Tell me about Kite AI's architecture",
-            "What are the use cases for Kite AI?"
+            "What is Kite AI?", "How does Kite AI help developers?",
+            "What are the main features of Kite AI?", "Can you explain the Kite AI ecosystem?",
+            "How do I get started with Kite AI?", "What are the benefits of using Kite AI?",
+            "How does Kite AI compare to other AI platforms?", "What kind of problems can Kite AI solve?",
+            "Tell me about Kite AI's architecture", "What are the use cases for Kite AI?"
         ]
     },
     "https://deployment-ecz5o55dh0dbqagkut47kzyc.stag-vxzy.zettablock.com/main": {
         "agent_id": "deployment_ECz5O55dH0dBQaGKuT47kzYC",
         "name": "Crypto Price Assistant",
         "questions": [
-            "Price of Solana",
-            "What's the current price of Bitcoin?",
-            "Show me Ethereum price trends",
-            "Top gainers in the last 24 hours?",
-            "Which coins are trending now?",
-            "Price analysis for DOT",
-            "How is AVAX performing?",
-            "Show me the price of MATIC",
-            "What's the market cap of BNB?",
-            "Price prediction for ADA"
+            "Price of Solana", "What's the current price of Bitcoin?",
+            "Show me Ethereum price trends", "Top gainers in the last 24 hours?",
+            "Which coins are trending now?", "Price analysis for DOT",
+            "How is AVAX performing?", "Show me the price of MATIC",
+            "What's the market cap of BNB?", "Price prediction for ADA"
         ]
     },
     "https://deployment-sofftlsf9z4fya3qchykaanq.stag-vxzy.zettablock.com/main": {
@@ -48,7 +40,10 @@ AI_ENDPOINTS = {
     }
 }
 
+
 class KiteAIAutomation:
+    """Automates AI interactions for earning points"""
+
     def __init__(self, wallet_address: str):
         self.wallet_address = wallet_address
         self.daily_points = 0
@@ -59,98 +54,117 @@ class KiteAIAutomation:
         self.MAX_DAILY_INTERACTIONS = self.MAX_DAILY_POINTS // self.POINTS_PER_INTERACTION
 
     def reset_daily_points(self):
-        current_time = datetime.now()
-        if current_time >= self.next_reset_time:
-            print(f"{self.print_timestamp()} {Fore.GREEN}🔄 Resetting points for new 24-hour period{Style.RESET_ALL}")
+        """Resets daily points if 24-hour period has elapsed"""
+        if datetime.now() >= self.next_reset_time:
+            print(f"{self.timestamp()} {Fore.GREEN}Resetting daily points!{Style.RESET_ALL}")
             self.daily_points = 0
-            self.next_reset_time = current_time + timedelta(hours=24)
+            self.next_reset_time = datetime.now() + timedelta(hours=24)
 
-    def print_timestamp(self):
-        return f"{Fore.YELLOW}[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]{Style.RESET_ALL}"
+    def should_wait_for_next_reset(self):
+        """If max points reached, wait for reset time"""
+        if self.daily_points >= self.MAX_DAILY_POINTS:
+            wait_seconds = (self.next_reset_time - datetime.now()).total_seconds()
+            print(f"{self.timestamp()} {Fore.YELLOW}Limit reached! Waiting until {self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
+            time.sleep(wait_seconds)
+            self.reset_daily_points()
 
-    def print_stats(self, stats: Dict):
-        print("\n" + Fore.CYAN + "╔════════════════════════════════════════════════╗")
-        print("║               🚀 CURRENT STATISTICS            ║")
-        print("╚════════════════════════════════════════════════╝" + Style.RESET_ALL)
-
-        print(f"📊 {Fore.YELLOW}Total Interactions:{Style.RESET_ALL} {Fore.GREEN}{stats.get('total_interactions', 0)}{Style.RESET_ALL}")
-        print(f"🤖 {Fore.YELLOW}Total Agents Used:{Style.RESET_ALL} {Fore.GREEN}{stats.get('total_agents_used', 0)}{Style.RESET_ALL}")
-        print(f"🕰 {Fore.YELLOW}First Seen:{Style.RESET_ALL} {Fore.CYAN}{stats.get('first_seen', 'N/A')}{Style.RESET_ALL}")
-        print(f"🔄 {Fore.YELLOW}Last Active:{Style.RESET_ALL} {Fore.CYAN}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
-        print(Fore.CYAN + "════════════════════════════════════════════════" + Style.RESET_ALL)
+    def timestamp(self):
+        """Returns formatted timestamp"""
+        return f"{Fore.YELLOW}[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]"
 
     def get_recent_transactions(self) -> List[str]:
-        print(f"{self.print_timestamp()} {Fore.CYAN}🔍 Fetching recent transactions...{Style.RESET_ALL}")
-        # Simulated transactions (Replace with actual API calls)
-        return [f"Tx {random.randint(1000, 9999)}" for _ in range(3)]
+        """Fetches recent transactions from KiteScan"""
+        print(f"{self.timestamp()} {Fore.BLUE}Fetching recent transactions...{Style.RESET_ALL}")
+        url = 'https://testnet.kitescan.ai/api/v2/advanced-filters'
+        params = {'transaction_types': 'coin_transfer', 'age': '5m'}
+        headers = {'accept': '*/*', 'user-agent': 'Mozilla/5.0'}
 
-    def send_ai_query(self, endpoint: str, question: str) -> str:
-        print(f"{self.print_timestamp()} {Fore.GREEN}📡 Sending query to AI Assistant...{Style.RESET_ALL}")
-        # Simulated response (Replace with real API calls)
-        return f"AI Response for: {question}"
+        try:
+            response = requests.get(url, params=params, headers=headers)
+            data = response.json()
+            hashes = [item['hash'] for item in data.get('items', [])]
+            print(f"{self.timestamp()} {Fore.MAGENTA}Fetched {len(hashes)} transactions!{Style.RESET_ALL}")
+            return hashes
+        except Exception as e:
+            print(f"{self.timestamp()} {Fore.RED}Error fetching transactions: {e}{Style.RESET_ALL}")
+            return []
 
-    def report_usage(self, endpoint: str, question: str, response: str) -> bool:
-        print(f"{self.print_timestamp()} {Fore.YELLOW}📤 Reporting usage...{Style.RESET_ALL}")
-        # Simulated report success
-        return True
+    def send_ai_query(self, endpoint: str, message: str) -> str:
+        """Sends AI query and returns response"""
+        headers = {'Accept': 'text/event-stream', 'Content-Type': 'application/json'}
+        data = {"message": message, "stream": True}
 
-    def check_stats(self) -> Dict:
-        return {
-            "total_interactions": random.randint(50, 500),
-            "total_agents_used": random.randint(2, 5),
-            "first_seen": "2024-01-01",
-            "last_active": datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        }
+        try:
+            response = requests.post(endpoint, headers=headers, json=data, stream=True)
+            accumulated_response = ""
+
+            print(f"{Fore.CYAN}AI Response: {Style.RESET_ALL}", end='', flush=True)
+            for line in response.iter_lines():
+                if line and line.decode('utf-8').startswith('data: '):
+                    try:
+                        json_str = line.decode('utf-8')[6:]
+                        if json_str == '[DONE]': break
+                        json_data = json.loads(json_str)
+                        content = json_data.get('choices', [{}])[0].get('delta', {}).get('content', '')
+                        if content:
+                            accumulated_response += content
+                            print(Fore.MAGENTA + content + Style.RESET_ALL, end='', flush=True)
+                    except json.JSONDecodeError:
+                        continue
+            print()
+            return accumulated_response.strip()
+        except Exception as e:
+            print(f"{self.timestamp()} {Fore.RED}Error in AI query: {e}{Style.RESET_ALL}")
+            return ""
 
     def run(self):
-        print(f"{self.print_timestamp()} {Fore.GREEN}🚀 Starting AI interaction script... (Press Ctrl+C to stop){Style.RESET_ALL}")
-        print(Fore.CYAN + "════════════════════════════════════════════════════" + Style.RESET_ALL)
-        print(f"💳 {Fore.YELLOW}Wallet Address:{Style.RESET_ALL} {Fore.MAGENTA}{self.wallet_address}{Style.RESET_ALL}")
-        print(f"🎯 {Fore.YELLOW}Daily Point Limit:{Style.RESET_ALL} {self.MAX_DAILY_POINTS} points ({self.MAX_DAILY_INTERACTIONS} interactions)")
-        print(f"⏳ {Fore.YELLOW}First reset at:{Style.RESET_ALL} {self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}")
-        print(Fore.CYAN + "════════════════════════════════════════════════════" + Style.RESET_ALL)
+        """Runs AI automation in a loop"""
+        print(f"{self.timestamp()} {Fore.GREEN}Starting AI interaction script! (Press Ctrl+C to stop){Style.RESET_ALL}")
+
+        interaction_count = 0
 
         try:
             while True:
                 self.reset_daily_points()
+                self.should_wait_for_next_reset()
 
-                print("\n" + Fore.MAGENTA + "══════════════════════════════════════════════════" + Style.RESET_ALL)
-                print(f"🔄 {Fore.CYAN}New Interaction{Style.RESET_ALL}")
-                print(f"📊 Points: {self.daily_points + self.POINTS_PER_INTERACTION}/{self.MAX_DAILY_POINTS}")
-                print(Fore.MAGENTA + "══════════════════════════════════════════════════" + Style.RESET_ALL)
-
-                transactions = self.get_recent_transactions()
-                AI_ENDPOINTS["https://deployment-sofftlsf9z4fya3qchykaanq.stag-vxzy.zettablock.com/main"]["questions"] = [
-                    f"What do you think of this transaction? {tx}"
-                    for tx in transactions
-                ]
+                interaction_count += 1
+                print(f"\n{Fore.CYAN}{'='*50}{Style.RESET_ALL}")
+                print(f"{Fore.MAGENTA}Interaction #{interaction_count}{Style.RESET_ALL}")
 
                 endpoint = random.choice(list(AI_ENDPOINTS.keys()))
                 question = random.choice(AI_ENDPOINTS[endpoint]["questions"])
 
-                print("\n" + Fore.CYAN + "📡 Selected AI Assistant:")
-                print(f"🤖 {Fore.WHITE}{AI_ENDPOINTS[endpoint]['name']}")
-                print(f"🆔 {Fore.WHITE}Agent ID: {AI_ENDPOINTS[endpoint]['agent_id']}")
-                print(f"❓ {Fore.WHITE}Question: {question}" + Style.RESET_ALL)
+                print(f"{Fore.CYAN}Selected AI: {AI_ENDPOINTS[endpoint]['name']}")
+                print(f"{Fore.CYAN}Agent ID: {AI_ENDPOINTS[endpoint]['agent_id']}")
+                print(f"{Fore.CYAN}Question: {question}{Style.RESET_ALL}")
 
                 response = self.send_ai_query(endpoint, question)
-
-                if self.report_usage(endpoint, question, response):
-                    print(f"{self.print_timestamp()} {Fore.GREEN}✅ Usage reported successfully{Style.RESET_ALL}")
-
-                final_stats = self.check_stats()
-                self.print_stats(final_stats)
-
                 self.daily_points += self.POINTS_PER_INTERACTION
-                time.sleep(random.uniform(1, 3))
+
+                delay = random.uniform(1, 3)
+                print(f"{self.timestamp()} {Fore.YELLOW}Waiting {delay:.1f} seconds before next query...{Style.RESET_ALL}")
+                time.sleep(delay)
 
         except KeyboardInterrupt:
-            print(f"\n{self.print_timestamp()} {Fore.YELLOW}🛑 Script stopped by user{Style.RESET_ALL}")
+            print(f"\n{self.timestamp()} {Fore.YELLOW}Script stopped by user!{Style.RESET_ALL}")
+
 
 def main():
-    wallet_address = input(f"{Fore.YELLOW}Input your registered Wallet Address: {Style.RESET_ALL}")
+    """Main function to start automation"""
+    banner = """
+╔══════════════════════════════════════════╗
+║             KITE AI AUTOMATION           ║
+║       Github: https://github.com/Mittyadav║
+╚══════════════════════════════════════════╝
+    """
+    print(Fore.CYAN + banner + Style.RESET_ALL)
+
+    wallet_address = input(f"{Fore.YELLOW}Register here: {Fore.GREEN}https://testnet.gokite.ai?r=cmuST6sG{Fore.YELLOW} and Clear Tasks!\nEnter your Wallet Address: {Style.RESET_ALL}")
+    
     automation = KiteAIAutomation(wallet_address)
     automation.run()
+
 
 if __name__ == "__main__":
     main()
