@@ -1,7 +1,7 @@
 # Gokite.ai Automate
 Gokite.ai testnet automated Daily Agent Interactions script.
 ## Tools and components required
-1. Gokite.ai Account, Register here: [https://testnet.gokite.ai](https://testnet.gokite.ai?r=cmuST6sG)
+1. Gokite.ai Account, Register here: [https://testnet.gokite.ai](https://testnet.gokite.ai?r=sCR5wfyu)
 2. EVM Wallet Address, Please register using EVM wallet using Avalanche Chain and complete all tasks first!
 3. VPS or RDP (OPTIONAL)
 ## Installation
@@ -16,12 +16,12 @@ pkg install python python-pip git -y
 ```
 - Download script [Manually](https://github.com/im-hanzou/gokite-ai-automate/archive/refs/heads/main.zip) or use git:
 ```bash
-git clone https://github.com/im-hanzou/gokite-ai-automate
+git clone https://github.com/Mittyadav/gokite
 ```
 ### Requirements installation
 - Make sure you already in bot folder:
 ```bash
-cd gokite-ai-automate
+cd gokite
 ```
 #### Windows and Termux:
 ```bash
