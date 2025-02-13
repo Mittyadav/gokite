@@ -71,8 +71,10 @@ class KiteAIAutomation:
         if self.daily_points >= self.MAX_DAILY_POINTS:
             wait_seconds = (self.next_reset_time - datetime.now()).total_seconds()
             if wait_seconds > 0:
-                print(f"{self.print_timestamp()} {Fore.YELLOW}Daily point limit reached ({self.MAX_DAILY_POINTS}){Style.RESET_ALL}")
-                print(f"{self.print_timestamp()} {Fore.YELLOW}Waiting until next reset at {self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
+                print(Fore.YELLOW + "\n⚠️  DAILY LIMIT REACHED! ⚠️" + Style.RESET_ALL)
+                print(f"🔹 {self.print_timestamp()} {Fore.RED}You have reached the daily point limit of {self.MAX_DAILY_POINTS}!{Style.RESET_ALL}")
+                print(f"⏳ {self.print_timestamp()} {Fore.YELLOW}Next reset scheduled at: {Fore.WHITE}{self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
+                print(Fore.YELLOW + "════════════════════════════════════════════" + Style.RESET_ALL)
                 time.sleep(wait_seconds)
                 self.reset_daily_points()
             return True
@@ -82,7 +84,9 @@ class KiteAIAutomation:
         return f"{Fore.YELLOW}[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}]{Style.RESET_ALL}"
 
     def get_recent_transactions(self) -> List[str]:
-        print(f"{self.print_timestamp()} {Fore.BLUE}Fetching recent transactions...{Style.RESET_ALL}")
+        print(Fore.CYAN + "\n🔍 FETCHING RECENT TRANSACTIONS..." + Style.RESET_ALL)
+        print(f"📌 {self.print_timestamp()} {Fore.BLUE}Retrieving latest blockchain transactions, please wait...{Style.RESET_ALL}")
+        print(Fore.CYAN + "════════════════════════════════════════════" + Style.RESET_ALL)
         url = 'https://testnet.kitescan.ai/api/v2/advanced-filters'
         params = {
             'transaction_types': 'coin_transfer',
@@ -207,10 +211,13 @@ class KiteAIAutomation:
                 self.should_wait_for_next_reset()
                 
                 interaction_count += 1
-                print(f"\n{Fore.CYAN}{'='*50}{Style.RESET_ALL}")
-                print(f"{Fore.MAGENTA}Interaction #{interaction_count}{Style.RESET_ALL}")
-                print(f"{Fore.CYAN}Points: {self.daily_points + self.POINTS_PER_INTERACTION}/{self.MAX_DAILY_POINTS} | Next Reset: {self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
-                
+                print(Fore.CYAN + "\n╔════════════════════════════════════════╗")
+                print("║  🔄 INTERACTION IN PROGRESS...        ║")
+                print("╚════════════════════════════════════════╝" + Style.RESET_ALL)
+                print(f"🚀 {Fore.MAGENTA}Interaction #{interaction_count}{Style.RESET_ALL}")
+                print(f"🎯 {Fore.CYAN}Points Earned: {Style.RESET_ALL}{Fore.WHITE}{self.daily_points + self.POINTS_PER_INTERACTION}/{self.MAX_DAILY_POINTS}{Style.RESET_ALL}")
+                print(f"⏳ {Fore.CYAN}Next Reset: {Style.RESET_ALL}{Fore.WHITE}{self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
+                print(Fore.CYAN + "════════════════════════════════════════" + Style.RESET_ALL)
                 transactions = self.get_recent_transactions()
                 AI_ENDPOINTS["https://deployment-sofftlsf9z4fya3qchykaanq.stag-vxzy.zettablock.com/main"]["questions"] = [
                     f"What do you think of this transaction? {tx}"
@@ -220,9 +227,13 @@ class KiteAIAutomation:
                 endpoint = random.choice(list(AI_ENDPOINTS.keys()))
                 question = random.choice(AI_ENDPOINTS[endpoint]["questions"])
                 
-                print(f"\n{Fore.CYAN}Selected AI Assistant: {Fore.WHITE}{AI_ENDPOINTS[endpoint]['name']}")
-                print(f"{Fore.CYAN}Agent ID: {Fore.WHITE}{AI_ENDPOINTS[endpoint]['agent_id']}")
-                print(f"{Fore.CYAN}Question: {Fore.WHITE}{question}{Style.RESET_ALL}\n")
+                print(Fore.CYAN + "\n╔════════════════════════════════════╗")
+                print("║ 🤖 AI ASSISTANT SELECTION         ║")
+                print("╚════════════════════════════════════╝" + Style.RESET_ALL)
+                print(f"🎯 {Fore.CYAN}Selected AI Assistant:{Style.RESET_ALL} {Fore.WHITE}{AI_ENDPOINTS[endpoint]['name']}{Style.RESET_ALL}")
+                print(f"🔹 {Fore.CYAN}Agent ID:{Style.RESET_ALL} {Fore.WHITE}{AI_ENDPOINTS[endpoint]['agent_id']}{Style.RESET_ALL}")
+                print(f"❓ {Fore.CYAN}Question:{Style.RESET_ALL} {Fore.WHITE}{question}{Style.RESET_ALL}")
+                print(Fore.CYAN + "══════════════════════════════════════" + Style.RESET_ALL)
                 
                 initial_stats = self.check_stats()
                 initial_interactions = initial_stats.get('total_interactions', 0)
