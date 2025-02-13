@@ -190,11 +190,16 @@ class KiteAIAutomation:
          print(Fore.CYAN + "════════════════════════════════" + Style.RESET_ALL)
 
     def run(self):
-        print(f"{self.print_timestamp()} {Fore.GREEN}Starting AI interaction script with 24-hour limits (Press Ctrl+C to stop){Style.RESET_ALL}")
-        print(f"{self.print_timestamp()} {Fore.CYAN}Wallet Address: {Fore.MAGENTA}{self.wallet_address}{Style.RESET_ALL}")
-        print(f"{self.print_timestamp()} {Fore.CYAN}Daily Point Limit: {self.MAX_DAILY_POINTS} points ({self.MAX_DAILY_INTERACTIONS} interactions){Style.RESET_ALL}")
-        print(f"{self.print_timestamp()} {Fore.CYAN}First reset will be at: {self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
-        
+        """Start AI interaction script with a sleek, formatted display."""
+        print(Fore.CYAN + "\n╔════════════════════════════════════════════╗")
+        print("║  🚀 AI AUTOMATION SCRIPT INITIATED  🔄   ║")
+        print("╚════════════════════════════════════════════╝" + Style.RESET_ALL)
+        print(f"📌 {self.print_timestamp()} {Fore.GREEN}Script running with 24-hour interaction limits! (Press {Fore.RED}Ctrl+C{Fore.GREEN} to stop){Style.RESET_ALL}")
+        print(f"🔹 {self.print_timestamp()} {Fore.CYAN}Wallet Address: {Fore.MAGENTA}{self.wallet_address}{Style.RESET_ALL}")
+        print(f"🔹 {self.print_timestamp()} {Fore.CYAN}Daily Point Limit: {Fore.WHITE}{self.MAX_DAILY_POINTS} points ({self.MAX_DAILY_INTERACTIONS} interactions){Style.RESET_ALL}")
+        print(f"⏳ {self.print_timestamp()} {Fore.CYAN}First Reset Scheduled: {Fore.WHITE}{self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
+        print(Fore.CYAN + "════════════════════════════════════════════" + Style.RESET_ALL)
+    
         interaction_count = 0
         try:
             while True:
