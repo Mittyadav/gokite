@@ -179,18 +179,31 @@ class KiteAIAutomation:
             return {}
 
     def print_stats(self, stats: Dict):
-        print(f"\n{Fore.CYAN}=== Current Statistics ==={Style.RESET_ALL}")
-        print(f"Total Interactions: {Fore.GREEN}{stats.get('total_interactions', 0)}{Style.RESET_ALL}")
-        print(f"Total Agents Used: {Fore.GREEN}{stats.get('total_agents_used', 0)}{Style.RESET_ALL}")
-        print(f"First Seen: {Fore.YELLOW}{stats.get('first_seen', 'N/A')}{Style.RESET_ALL}")
-        print(f"Last Active: {Fore.YELLOW}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
+    """Display user statistics in a sleek, formatted style."""
+    
+    print(Fore.CYAN + "\n╔══════════════════════════════╗")
+    print("║     📊 USER STATISTICS      ║")
+    print("╚══════════════════════════════╝" + Style.RESET_ALL)
+    
+    print(f"🔹 {Fore.GREEN}Total Interactions:{Style.RESET_ALL} {Fore.WHITE}{stats.get('total_interactions', 0)}{Style.RESET_ALL}")
+    print(f"🔹 {Fore.GREEN}Total Agents Used:{Style.RESET_ALL} {Fore.WHITE}{stats.get('total_agents_used', 0)}{Style.RESET_ALL}")
+    print(f"📅 {Fore.YELLOW}First Seen:{Style.RESET_ALL} {Fore.WHITE}{stats.get('first_seen', 'N/A')}{Style.RESET_ALL}")
+    print(f"🕒 {Fore.YELLOW}Last Active:{Style.RESET_ALL} {Fore.WHITE}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
 
+    print(Fore.CYAN + "════════════════════════════════" + Style.RESET_ALL)
     def run(self):
-        print(f"{self.print_timestamp()} {Fore.GREEN}Starting AI interaction script with 24-hour limits (Press Ctrl+C to stop){Style.RESET_ALL}")
-        print(f"{self.print_timestamp()} {Fore.CYAN}Wallet Address: {Fore.MAGENTA}{self.wallet_address}{Style.RESET_ALL}")
-        print(f"{self.print_timestamp()} {Fore.CYAN}Daily Point Limit: {self.MAX_DAILY_POINTS} points ({self.MAX_DAILY_INTERACTIONS} interactions){Style.RESET_ALL}")
-        print(f"{self.print_timestamp()} {Fore.CYAN}First reset will be at: {self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
-        
+    """Start AI interaction script with a sleek, formatted display."""
+    
+    print(Fore.CYAN + "\n╔════════════════════════════════════════════╗")
+    print("║  🚀 AI AUTOMATION SCRIPT INITIATED  🔄   ║")
+    print("╚════════════════════════════════════════════╝" + Style.RESET_ALL)
+
+    print(f"📌 {self.print_timestamp()} {Fore.GREEN}Script running with 24-hour interaction limits! (Press {Fore.RED}Ctrl+C{Fore.GREEN} to stop){Style.RESET_ALL}")
+    print(f"🔹 {self.print_timestamp()} {Fore.CYAN}Wallet Address: {Fore.MAGENTA}{self.wallet_address}{Style.RESET_ALL}")
+    print(f"🔹 {self.print_timestamp()} {Fore.CYAN}Daily Point Limit: {Fore.WHITE}{self.MAX_DAILY_POINTS} points ({self.MAX_DAILY_INTERACTIONS} interactions){Style.RESET_ALL}")
+    print(f"⏳ {self.print_timestamp()} {Fore.CYAN}Next Reset Scheduled: {Fore.WHITE}{self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
+
+    print(Fore.CYAN + "════════════════════════════════════════════" + Style.RESET_ALL)
         interaction_count = 0
         try:
             while True:
@@ -246,13 +259,13 @@ def main():
     """Display a sleek, modern banner and start the automation process."""
     print(Fore.CYAN + """
 ╔═════════════════════════════════════════════════╗
-║           🚀 KITE AI AUTOMATION SYSTEM 🚀        ║
+║           🚀 KITE AI AUTOMATION SYSTEM 🚀       ║
 ║  🤖 Automate AI Interactions & Earn Rewards 🎯  ║
 ║  🔗 Github: https://github.com/Mittyadav        ║
 ╚═════════════════════════════════════════════════╝
 """ + Style.RESET_ALL)
 
-    print(f"{Fore.YELLOW}📌 First, register here: {Fore.GREEN}https://testnet.gokite.ai?r=cmuST6sG{Style.RESET_ALL}")
+    print(f"{Fore.YELLOW}📌 First, register here: {Fore.GREEN}https://testnet.gokite.ai?r=sCR5wfyu{Style.RESET_ALL}")
     print(f"{Fore.YELLOW}📝 Complete the tasks before proceeding! ✅\n{Style.RESET_ALL}")
 
     wallet_address = input(f"{Fore.CYAN}🔹 Enter your registered Wallet Address: {Style.RESET_ALL}")
