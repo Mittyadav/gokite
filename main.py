@@ -246,7 +246,7 @@ def main():
     print_banner = """
 ╔══════════════════════════════════════════════╗
 ║               KITE AI AUTOMATE               ║
-║     Github: https://github.com/im-hanzou     ║
+║     Github: https://github.com/Mittyadav    ║
 ╚══════════════════════════════════════════════╝
     """
     print(Fore.CYAN + print_banner + Style.RESET_ALL)
