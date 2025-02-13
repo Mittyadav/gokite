@@ -181,16 +181,16 @@ class KiteAIAutomation:
     def print_stats(self, stats: Dict):
          """Display user statistics in a stylish, formatted style."""
     
-        print(Fore.CYAN + "\n╔════════════════════════════════╗")
-        print("║        📊 USER STATISTICS      ║")
-        print("╚════════════════════════════════╝" + Style.RESET_ALL)
+           print(Fore.CYAN + "\n╔════════════════════════════════╗")
+           print("║        📊 USER STATISTICS      ║")
+           print("╚════════════════════════════════╝" + Style.RESET_ALL)
     
-        print(f"🔹 {Fore.GREEN}Total Interactions:{Style.RESET_ALL} {Fore.WHITE}{stats.get('total_interactions', 0)}{Style.RESET_ALL}")
-        print(f"🔹 {Fore.GREEN}Total Agents Used:{Style.RESET_ALL} {Fore.WHITE}{stats.get('total_agents_used', 0)}{Style.RESET_ALL}")
-        print(f"📅 {Fore.YELLOW}First Seen:{Style.RESET_ALL} {Fore.WHITE}{stats.get('first_seen', 'N/A')}{Style.RESET_ALL}")
-        print(f"🕒 {Fore.YELLOW}Last Active:{Style.RESET_ALL} {Fore.WHITE}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
+           print(f"🔹 {Fore.GREEN}Total Interactions:{Style.RESET_ALL} {Fore.WHITE}{stats.get('total_interactions', 0)}{Style.RESET_ALL}")
+           print(f"🔹 {Fore.GREEN}Total Agents Used:{Style.RESET_ALL} {Fore.WHITE}{stats.get('total_agents_used', 0)}{Style.RESET_ALL}")
+           print(f"📅 {Fore.YELLOW}First Seen:{Style.RESET_ALL} {Fore.WHITE}{stats.get('first_seen', 'N/A')}{Style.RESET_ALL}")
+           print(f"🕒 {Fore.YELLOW}Last Active:{Style.RESET_ALL} {Fore.WHITE}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
 
-        print(Fore.CYAN + "════════════════════════════════" + Style.RESET_ALL)
+           print(Fore.CYAN + "════════════════════════════════" + Style.RESET_ALL)
 
     def run(self):
         print(f"{self.print_timestamp()} {Fore.GREEN}Starting AI interaction script with 24-hour limits (Press Ctrl+C to stop){Style.RESET_ALL}")
