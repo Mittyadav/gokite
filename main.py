@@ -178,8 +178,8 @@ class KiteAIAutomation:
             print(f"{self.print_timestamp()} {Fore.RED}Error checking stats: {e}{Style.RESET_ALL}")
             return {}
 
-    def print_stats(self, stats: Dict):
-    """Display user statistics in a sleek, formatted style."""
+   def print_stats(self, stats: Dict):
+       """Display user statistics in a sleek, formatted style."""
     
     print(Fore.CYAN + "\n╔══════════════════════════════╗")
     print("║     📊 USER STATISTICS      ║")
@@ -191,9 +191,10 @@ class KiteAIAutomation:
     print(f"🕒 {Fore.YELLOW}Last Active:{Style.RESET_ALL} {Fore.WHITE}{stats.get('last_active', 'N/A')}{Style.RESET_ALL}")
 
     print(Fore.CYAN + "════════════════════════════════" + Style.RESET_ALL)
-    def run(self):
+
+def run(self):
     """Start AI interaction script with a sleek, formatted display."""
-    
+
     print(Fore.CYAN + "\n╔════════════════════════════════════════════╗")
     print("║  🚀 AI AUTOMATION SCRIPT INITIATED  🔄   ║")
     print("╚════════════════════════════════════════════╝" + Style.RESET_ALL)
@@ -204,6 +205,18 @@ class KiteAIAutomation:
     print(f"⏳ {self.print_timestamp()} {Fore.CYAN}Next Reset Scheduled: {Fore.WHITE}{self.next_reset_time.strftime('%Y-%m-%d %H:%M:%S')}{Style.RESET_ALL}")
 
     print(Fore.CYAN + "════════════════════════════════════════════" + Style.RESET_ALL)
+
+    # Add some logic here to prevent an empty function
+    while True:
+        self.reset_daily_points()
+        if self.should_wait_for_next_reset():
+            continue
+
+        print(f"\n{Fore.CYAN}{'='*50}{Style.RESET_ALL}")
+        print(f"{Fore.MAGENTA}Processing New Interaction...{Style.RESET_ALL}")
+        
+        # Simulate waiting
+        time.sleep(2)
         interaction_count = 0
         try:
             while True:
