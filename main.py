@@ -261,7 +261,7 @@ def main():
     """
     print(Fore.CYAN + print_banner + Style.RESET_ALL)
     
-    wallet_address = input(f"{Fore.YELLOW}Register first here: {Fore.GREEN}https://testnet.gokite.ai?r=cmuST6sG{Fore.YELLOW} and Clear Tasks!\nNow, input your registered Wallet Address: {Style.RESET_ALL}")
+    wallet_address = input(f"{Fore.YELLOW}Register first here: {Fore.GREEN}join my telegram channel @scripthub00{Fore.YELLOW} and Clear Tasks!\nNow, input your registered Wallet Address: {Style.RESET_ALL}")
     
     automation = KiteAIAutomation(wallet_address)
     automation.run()
